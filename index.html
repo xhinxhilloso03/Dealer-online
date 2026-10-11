@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050505">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="description" content="TOCHINCHI: catálogo urbano de Pachuca de Soto, Hidalgo, México.">
+  <title>TOCHINCHI | Catálogo urbano</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#050505;--panel:#141414;--text:#fff;--muted:#cfcfcf;--green:#caff00}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;color:var(--text);font-family:"Arial Black",Impact,Arial,sans-serif;background:radial-gradient(circle at 8% 8%,#caff0030 0 3px,transparent 4px),radial-gradient(circle at 91% 13%,#ffffff20 0 4px,transparent 5px),#050505}
+    .top-glow{height:5px;background:repeating-linear-gradient(115deg,#caff00 0 32px,#fff 32px 38px,#111 38px 58px)}
+    header{text-align:center;padding:25px 16px 28px;border-bottom:1px solid #ffffff25;background:radial-gradient(ellipse at top,#caff0018,transparent 65%),#050505}
+    .brand-logo{display:block;width:min(94vw,510px);height:auto;margin:-5px auto 0;object-fit:contain;filter:drop-shadow(0 10px 18px #000b)}
+    .brand-text{font-family:"Fredoka",sans-serif;font-size:clamp(2.7rem,12vw,5.5rem);font-weight:700;letter-spacing:-.06em;line-height:1.1;color:var(--green);text-shadow:3px 3px 0 #555,6px 6px 0 #222}
+    .location{margin:12px 0 5px;font-size:clamp(.95rem,3.6vw,1.15rem)}
+    .tagline{margin:0;color:var(--green);font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+    .container{width:min(1120px,100%);margin:auto;padding:22px 14px 42px}
+    .welcome{padding:20px;margin-bottom:18px;border:1px solid var(--green);border-radius:14px;background:linear-gradient(135deg,#171717,#080808)}
+    .welcome h2{margin:0 0 7px;font-size:clamp(1.4rem,5vw,2rem);text-transform:uppercase}
+    .welcome p{margin:0;color:var(--muted);line-height:1.5}
+    .search-wrap{position:relative;margin-bottom:14px}
+    .search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%)}
+    #search{width:100%;padding:14px 15px 14px 43px;border:1px solid #ffffff35;border-radius:8px;outline:none;color:#fff;background:#111;font:inherit;font-size:1rem}
+    #search::placeholder{color:#aaa}
+    #search:focus{border-color:var(--green);box-shadow:0 0 0 3px #caff0020}
+    .categories{display:flex;gap:8px;overflow-x:auto;padding:3px 1px 14px}
+    .category-btn{flex:0 0 auto;padding:10px 15px;border:1px solid #ffffff35;border-radius:6px;color:#fff;background:#181818;font:700 .92rem "Fredoka",sans-serif;cursor:pointer}
+    .category-btn.active,.category-btn:hover{color:#050505;background:var(--green);border-color:var(--green)}
+    .section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:13px 2px 15px}
+    .section-heading h2{margin:0;font-size:clamp(1.25rem,4.5vw,1.8rem);text-transform:uppercase}
+    #count{color:#caff00;font-size:.9rem;white-space:nowrap}
+    .products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+    .product{min-width:0;overflow:hidden;border:1px solid #ffffff35;border-radius:10px;background:linear-gradient(160deg,#191919,#080808);transition:transform .2s,border-color .2s}
+    .product:hover{transform:translateY(-3px);border-color:var(--green);box-shadow:0 12px 25px #caff0020}
+    .product-art{display:flex;align-items:center;justify-content:center;min-height:125px;position:relative;overflow:hidden;background:radial-gradient(circle at 25% 20%,#ffffff35,transparent 22%),linear-gradient(135deg,#202020,#080808);font-size:3.2rem}
+    .product-art:after{content:"";position:absolute;width:100px;height:100px;border:2px solid #ffffff35;border-radius:42% 58% 61% 39%;transform:rotate(25deg)}
+    .product-emoji{position:relative;z-index:1;filter:drop-shadow(0 5px 3px #0008)}
+    .product-info{padding:12px}
+    .product-category{display:inline-block;color:var(--green);font-size:.75rem;margin-bottom:6px}
+    .product-info h3{margin:0 0 6px;font-size:1.02rem;line-height:1.2;overflow-wrap:anywhere}
+    .description{min-height:32px;margin:0;color:#cfcfcf;font:400 .85rem Arial,sans-serif;line-height:1.4;overflow-wrap:anywhere}
+    .price{margin:12px 0;font-size:1rem;color:var(--green)}
+    .order-btn{width:100%;padding:11px 8px;border:0;border-radius:5px;color:#080808;background:var(--green);font:900 .82rem "Fredoka",sans-serif;text-transform:uppercase;cursor:pointer}
+    .order-btn:hover{filter:brightness(1.08)}
+    .empty{grid-column:1/-1;padding:30px 18px;text-align:center;color:var(--muted);background:#111;border:1px dashed #ffffff35;border-radius:10px}
+    footer{text-align:center;padding:25px 15px 30px;border-top:2px solid var(--green);background:#030303;color:#cfcfcf;font:400 .9rem Arial,sans-serif}
+    .footer-brand{font-family:"Fredoka",sans-serif;font-weight:700;font-size:1.7rem;letter-spacing:.04em;color:var(--green);text-shadow:2px 2px 0 #333}
+    footer p{margin:7px 0 0}
+    button:focus-visible,input:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+    @media(min-width:620px){.container{padding:28px 22px 50px}.products{grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}.product-art{min-height:155px;font-size:3.8rem}}
+    @media(min-width:930px){.products{grid-template-columns:repeat(4,minmax(0,1fr))}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important}}
+  </style>
+</head>
+<body>
+  <div class="top-glow" aria-hidden="true"></div>
+  <header>
+    <img class="brand-logo" src="tochinchi-logo.png" alt="Mascota urbana TOCHINCHI" onerror="this.style.display='none';document.getElementById('brand-text').hidden=false">
+    <div id="brand-text" class="brand-text" hidden>TOCHINCHI</div>
+    <p class="location">📍 Pachuca de Soto, Hidalgo, México</p>
+    <p class="tagline">Catálogo urbano</p>
+  </header>
+  <main class="container">
+    <section class="welcome">
+      <h2>Bienvenido al barrio</h2>
+      <p>Explora el catálogo TOCHINCHI. Busca productos o selecciona una categoría.</p>
+    </section>
+    <div class="search-wrap"><span class="search-icon" aria-hidden="true">🔎</span><input id="search" type="search" placeholder="Buscar productos o categorías..." aria-label="Buscar productos o categorías"></div>
+    <nav id="categories" class="categories" aria-label="Categorías de productos"></nav>
+    <div class="section-heading"><h2 id="section-title">Todos los productos</h2><span id="count" aria-live="polite"></span></div>
+    <section id="products" class="products" aria-live="polite"></section>
+  </main>
+  <footer>
+    <div class="footer-brand">TOCHINCHI</div>
+    <p>📍 Pachuca de Soto, Hidalgo, México</p>
+    <p>Catálogo de productos en línea · © <span id="year"></span> TOCHINCHI</p>
+  </footer>
+  <script>
+    // CONFIGURACIÓN: coloca tu número de WhatsApp con código de país, solo dígitos.
+    const WHATSAPP = "5210000000000";
+
+    // Edita los productos dentro de este arreglo.
+    const categories = [
+      { name: "Weed", emoji: "🛍️", products: [
+        { name: "Mango Kush", description: "Onza 25 gr.", price: 500, emoji: "☘️" },
+        { name: "Acapulco Kush", description: "Onza 25 gr.", price: 800, emoji: "☘️" },
+        { name: "Tropical", description: "Onza 25 gr.", price: 1200, emoji: "☘️" },
+        { name: "Piña Express", description: "Onza 25 gr.", price: 1100, emoji: "☘️" },
+        { name: "Orange", description: "Onza 25 gr.", price: 1500, emoji: "☘️" }
+      ]},
+      { name: "Categoría 2", emoji: "⭐", products: [
+        { name: "Producto 1", description: "Descripción del producto.", price: 0, emoji: "🌟" },
+        { name: "Producto 2", description: "Descripción del producto.", price: 0, emoji: "💎" }
+      ]},
+      { name: "Categoría 3", emoji: "🎁", products: [
+        { name: "Producto 1", description: "Descripción del producto.", price: 0, emoji: "🎁" },
+        { name: "Producto 2", description: "Descripción del producto.", price: 0, emoji: "🎉" }
+      ]}
+    ];
+
+    const categoriesEl = document.getElementById("categories");
+    const productsEl = document.getElementById("products");
+    const searchEl = document.getElementById("search");
+    const titleEl = document.getElementById("section-title");
+    const countEl = document.getElementById("count");
+    let activeCategory = "Todas";
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    function makeElement(tag, className, text) {
+      const el = document.createElement(tag);
+      if (className) el.className = className;
+      if (text !== undefined) el.textContent = text;
+      return el;
+    }
+
+    function renderCategories() {
+      categoriesEl.replaceChildren();
+      ["Todas", ...categories.map(c => c.name)].forEach(name => {
+        const btn = makeElement("button", "category-btn" + (activeCategory === name ? " active" : ""), name);
+        btn.type = "button";
+        btn.setAttribute("aria-pressed", String(activeCategory === name));
+        btn.addEventListener("click", () => { activeCategory = name; renderCategories(); renderProducts(); });
+        categoriesEl.appendChild(btn);
+      });
+    }
+
+    function renderProducts() {
+      productsEl.replaceChildren();
+      const query = searchEl.value.trim().toLocaleLowerCase("es-MX");
+      const matches = [];
+      categories.forEach(category => {
+        if (activeCategory !== "Todas" && activeCategory !== category.name) return;
+        category.products.forEach(product => {
+          const searchable = `${product.name} ${product.description} ${category.name}`.toLocaleLowerCase("es-MX");
+          if (searchable.includes(query)) matches.push({...product, category: category.name, categoryEmoji: category.emoji});
+        });
+      });
+      titleEl.textContent = activeCategory === "Todas" ? "Todos los productos" : activeCategory;
+      countEl.textContent = `${matches.length} ${matches.length === 1 ? "producto" : "productos"}`;
+      if (!matches.length) {
+        productsEl.appendChild(makeElement("div", "empty", "No encontramos productos. Prueba otra búsqueda o categoría."));
+        return;
+      }
+      matches.forEach(product => {
+        const card = makeElement("article", "product");
+        const art = makeElement("div", "product-art");
+        art.setAttribute("aria-hidden", "true");
+        art.appendChild(makeElement("span", "product-emoji", product.emoji || product.categoryEmoji));
+        const info = makeElement("div", "product-info");
+        info.appendChild(makeElement("span", "product-category", product.category));
+        info.appendChild(makeElement("h3", "", product.name));
+        info.appendChild(makeElement("p", "description", product.description || ""));
+        const priceText = product.price > 0 ? new Intl.NumberFormat("es-MX", {style:"currency",currency:"MXN"}).format(product.price) : "Consultar precio";
+        info.appendChild(makeElement("p", "price", priceText));
+        const order = makeElement("button", "order-btn", "Consultar por WhatsApp");
+        order.type = "button";
+        order.addEventListener("click", () => {
+          if (WHATSAPP === "5210000000000" || !/^\\d{10,15}$/.test(WHATSAPP)) {
+            alert("Antes de activar WhatsApp, reemplaza WHATSAPP en el código por tu número con código de país, sin espacios ni signos.");
+            return;
+          }
+          const message = ["¡Hola! Me interesa un producto del catálogo TOCHINCHI.", `Producto: ${product.name}`, `Categoría: ${product.category}`, `Precio mostrado: ${priceText}`, "¿Me puedes dar más información?"].join("\\n");
+          window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+        });
+        info.appendChild(order);
+        card.append(art, info);
+        productsEl.appendChild(card);
+      });
+    }
+    searchEl.addEventListener("input", renderProducts);
+    renderCategories();
+    renderProducts();
+  </script>
+</body>
+</html>
